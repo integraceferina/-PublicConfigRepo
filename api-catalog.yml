@@ -8,8 +8,9 @@ management:
 eureka:
   client:
     service-url:
-      defaultZone: http://localhost:8761/eureka/
-
+      defaultZone: http://eureka-server:8761/eureka/
+  instance:
+    instance-id: ${spring.application.name}:${spring.application.instance_id:${random.value}}
 
 spring:
   data:
@@ -22,7 +23,7 @@ spring:
 
 resilience4j:
   circuitbreaker:
-    configs: 
+    configs:
       default:
         sliding-window-size: 10 # Cantidad de solicitudes que se van a contar para determinar si el circuito está abierto o cerrado
         failure-rate-threshold: 50 #  Porcentaje de fallos que se deben contar para abrir el circuito
@@ -40,4 +41,4 @@ resilience4j:
         waitDuration: 1000 # Duración de tiempo que se espera para volver a intentar una solicitud
         maxAttempts: 3 # Cantidad máxima de intentos para una solicitud
         retryExceptions: # Excepciones que se deben volver a intentar
-          - feign.FeignException$InternalServerError # InternalServerError -> 500 
+          - feign.FeignException$InternalServerError # InternalServerError -> 500
